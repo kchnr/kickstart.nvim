@@ -213,6 +213,19 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+local function theme(repo, color, light_or_dark)
+  return {
+    repo,
+    priority = 1000,
+    init = function()
+      vim.opt.background = light_or_dark
+      vim.cmd.colorscheme(color)
+      -- You can configure highlights by doing something like:
+      vim.cmd.hi 'Comment gui=none'
+    end,
+  }
+end
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -224,6 +237,7 @@ vim.opt.rtp:prepend(lazypath)
 --    :Lazy update
 --
 -- NOTE: Here is where you install your plugins.
+--
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
@@ -356,6 +370,17 @@ require('lazy').setup({
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
+          },
+        },
+        defaults = {
+          path_display = { 'smart' },
+          preview = true,
+
+          layout_config = {
+            anchor = 'N',
+            height = 0.99,
+            width = 0.99,
+            prompt_position = 'top',
           },
         },
       }
@@ -739,25 +764,13 @@ require('lazy').setup({
       }
     end,
   },
-
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'olimorris/onedarkpro.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    init = function()
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'onelight'
-
-      -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment gui=none'
-    end,
-  },
-
+  theme('catppuccin/nvim', 'catppuccin', 'light'),
+  -- theme('catppuccin/nvim', 'catppuccin', 'dark'),
+  -- theme('sainnhe/everforest', 'everforest', 'light'),
+  -- theme('sainnhe/everforest', 'everforest', 'dark'),
+  -- theme('folke/tokyonight.nvim', 'tokyonight', 'dark'),
+  -- theme('folke/tokyonight.nvim', 'tokyonight', 'light'),
+  --
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -778,6 +791,13 @@ require('lazy').setup({
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
+
+      --
+      --
+      --
+      local mini_files = require 'mini.files'
+      mini_files.setup()
+      vim.keymap.set('n', '-', mini_files.open, { desc = 'Go to previous [D]iagnostic message' })
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
