@@ -764,11 +764,11 @@ require('lazy').setup({
       }
     end,
   },
-  theme('catppuccin/nvim', 'catppuccin', 'light'),
+  -- theme('catppuccin/nvim', 'catppuccin', 'light'),
   -- theme('catppuccin/nvim', 'catppuccin', 'dark'),
   -- theme('sainnhe/everforest', 'everforest', 'light'),
   -- theme('sainnhe/everforest', 'everforest', 'dark'),
-  -- theme('folke/tokyonight.nvim', 'tokyonight', 'dark'),
+  theme('folke/tokyonight.nvim', 'tokyonight', 'dark'),
   -- theme('folke/tokyonight.nvim', 'tokyonight', 'light'),
   --
   -- Highlight todo, notes, etc in comments
