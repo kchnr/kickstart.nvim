@@ -821,6 +821,13 @@ require('lazy').setup({
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
 
+      --
+      local mini_files = require 'mini.files'
+      mini_files.setup()
+      vim.keymap.set('n', '-', function()
+        mini_files.open(vim.api.nvim_buf_get_name(0))
+      end, { desc = '[-] Navigate files' })
+
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
